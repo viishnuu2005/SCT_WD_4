@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #task-form {
+      margin-bottom: 20px;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      padding: 10px;
+      margin: 5px 0;
+      border-left: 4px solid #2196F3;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    button {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My To-Do List</h1>
+
+  <form id="task-form">
+    <input type="text" id="taskInput" placeholder="Enter task" required>
+    <input type="datetime-local" id="taskDateTime" required>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const form = document.getElementById('task-form');
+    const taskList = document.getElementById('taskList');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const taskText = document.getElementById('taskInput').value;
+      const taskTime = document.getElementById('taskDateTime').value;
+      if (taskText && taskTime) {
+        const li = document.createElement('li');
+
+        const span = document.createElement('span');
+        span.textContent = taskText + " (Due: " + taskTime + ") ";
+        li.appendChild(span);
+
+        const doneBtn = document.createElement('button');
+        doneBtn.textContent = 'Done';
+        doneBtn.onclick = function() {
+          span.classList.toggle('completed');
+        };
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = function() {
+          const newTask = prompt('Edit task:', taskText);
+          if (newTask) {
+            span.textContent = newTask + " (Due: " + taskTime + ")";
+          }
+        };
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = function() {
+          taskList.removeChild(li);
+        };
+
+        li.appendChild(doneBtn);
+        li.appendChild(editBtn);
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+
+        form.reset();
+      }
+    });
+  </script>
+
+</body>
+</html>
